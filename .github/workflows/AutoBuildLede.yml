@@ -93,11 +93,17 @@ jobs:
       uses: mxschmitt/action-tmate@v3
       if: contains(github.event.action, 'ssh')
 
+    - name: Defconfig
+      id: defconfig
+      run: |
+        cd lede
+        make defconfig
+        cat .config
+
     - name: Download Package
       id: package
       run: |
         cd lede
-        make defconfig
         make download -j$(nproc)
         find dl -size -1024c -exec ls -l {} \;
         find dl -size -1024c -exec rm -f {} \;
